@@ -5,29 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculadora de Jornada · HUVN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <style>
   :root {
     --verde: #00845a;
     --verde-claro: #e6f4ef;
     --verde-medio: #b8ddd1;
     --verde-oscuro: #005a3e;
+    --verde-brillo: #00a870;
     --tinta: #1a2420;
     --gris: #6b7875;
-    --gris-claro: #f2f5f4;
+    --gris-claro: #f4f7f6;
     --blanco: #fafcfb;
     --borde: #d4e4df;
     --rojo: #c0392b;
     --amarillo: #f39c12;
-    --sombra: 0 2px 16px rgba(0,132,90,0.10);
-    --radio: 14px;
+    --sombra-sm: 0 1px 4px rgba(0,132,90,0.07), 0 2px 8px rgba(0,0,0,0.04);
+    --sombra: 0 4px 16px rgba(0,132,90,0.10), 0 2px 8px rgba(0,0,0,0.05);
+    --sombra-lg: 0 8px 40px rgba(0,132,90,0.22), 0 2px 8px rgba(0,0,0,0.08);
+    --radio: 16px;
+    --radio-sm: 10px;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--blanco);
+    background-color: var(--blanco);
+    background-image: radial-gradient(circle, rgba(0,132,90,0.055) 1px, transparent 1px);
+    background-size: 26px 26px;
     color: var(--tinta);
     min-height: 100vh;
     overflow-x: hidden;
@@ -45,59 +51,87 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 80% 50%, rgba(0,200,120,0.15) 0%, transparent 60%);
+    background:
+      radial-gradient(ellipse at 88% 40%, rgba(0,220,140,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 10% 90%, rgba(0,40,25,0.5) 0%, transparent 45%);
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--verde-brillo) 30%, var(--verde-medio) 70%, transparent 100%);
   }
 
   .header-inner {
     max-width: 860px;
     margin: 0 auto;
-    padding: 36px 24px 32px;
+    padding: 30px 24px 26px;
     position: relative;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 18px;
   }
 
   .logo-badge {
-    width: 52px;
-    height: 52px;
-    background: var(--verde);
-    border-radius: 14px;
+    width: 54px;
+    height: 54px;
+    background: linear-gradient(140deg, var(--verde-brillo), var(--verde));
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 24px;
+    font-size: 26px;
+    box-shadow: 0 4px 18px rgba(0,200,130,0.35);
   }
 
-  header h1 {
+  .header-texto { flex: 1; }
+
+  .header-texto h1 {
     font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    font-size: clamp(1.2rem, 4vw, 1.72rem);
     color: #fff;
     line-height: 1.2;
     font-weight: 400;
   }
 
-  header p {
-    font-size: 0.82rem;
+  .header-texto p {
+    font-size: 0.76rem;
     color: var(--verde-medio);
-    margin-top: 4px;
-    letter-spacing: 0.04em;
+    margin-top: 5px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     font-weight: 500;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
   }
 
   /* ── LAYOUT ─────────────────────────────── */
   main {
     max-width: 860px;
     margin: 0 auto;
-    padding: 32px 16px 60px;
+    padding: 26px 16px 60px;
   }
 
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 14px;
   }
 
   @media (max-width: 600px) {
@@ -112,115 +146,180 @@
     background: #fff;
     border: 1px solid var(--borde);
     border-radius: var(--radio);
-    padding: 24px;
-    box-shadow: var(--sombra);
+    padding: 22px 22px 20px;
+    box-shadow: var(--sombra-sm);
+    transition: box-shadow 0.25s, transform 0.25s;
   }
 
+  .card:hover { box-shadow: var(--sombra); }
+
   .card-titulo {
-    font-size: 0.72rem;
-    font-weight: 600;
+    font-size: 0.69rem;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--verde);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
+  }
+
+  .card-titulo .paso {
+    width: 22px;
+    height: 22px;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.63rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0;
+    box-shadow: 0 2px 6px rgba(0,132,90,0.3);
   }
 
   .card-titulo::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--verde-claro);
+    background: var(--borde);
   }
 
   /* ── FORM ELEMENTS ─────────────────────── */
-  .campo {
-    margin-bottom: 16px;
-  }
-
+  .campo { margin-bottom: 14px; }
   .campo:last-child { margin-bottom: 0; }
 
-  label {
+  .campo > label {
     display: block;
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-size: 0.79rem;
+    font-weight: 600;
     color: var(--gris);
-    margin-bottom: 7px;
+    margin-bottom: 6px;
   }
 
-  input[type="date"],
-  select {
+  input[type="date"] {
     width: 100%;
     padding: 11px 14px;
     border: 1.5px solid var(--borde);
-    border-radius: 9px;
+    border-radius: var(--radio-sm);
     font-family: 'DM Sans', sans-serif;
     font-size: 0.95rem;
     color: var(--tinta);
     background: var(--gris-claro);
     appearance: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     outline: none;
   }
 
-  input[type="date"]:focus,
-  select:focus {
+  input[type="date"]:focus {
     border-color: var(--verde);
     box-shadow: 0 0 0 3px rgba(0,132,90,0.12);
     background: #fff;
   }
 
-  /* Turno selector visual */
+  /* ── TURNO SELECTOR ─────────────────────── */
   .turno-grupo {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
 
-  .turno-opcion {
-    position: relative;
-  }
+  .turno-opcion { position: relative; }
 
   .turno-opcion input[type="radio"] {
     position: absolute;
     opacity: 0;
     width: 0;
+    height: 0;
   }
 
   .turno-opcion label {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 14px 8px;
+    gap: 4px;
+    padding: 16px 8px 13px;
     border: 1.5px solid var(--borde);
-    border-radius: 10px;
+    border-radius: 13px;
     cursor: pointer;
     background: var(--gris-claro);
-    transition: all 0.2s;
+    transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
     text-align: center;
-    font-size: 0.8rem;
     color: var(--gris);
     margin: 0;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
   }
 
-  .turno-opcion label .emoji { font-size: 1.5rem; }
+  .turno-opcion label .emoji {
+    font-size: 1.75rem;
+    line-height: 1;
+    transition: transform 0.22s cubic-bezier(0.22,1,0.36,1);
+    display: block;
+  }
+
+  .turno-opcion label .turno-nombre {
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--tinta);
+    transition: color 0.2s;
+  }
+
+  .turno-opcion label .turno-horas {
+    font-size: 0.67rem;
+    color: var(--gris);
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  /* checkmark badge */
+  .turno-opcion label::after {
+    content: '✓';
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 17px;
+    height: 17px;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.55rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 17px;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.4);
+    transition: opacity 0.2s, transform 0.22s cubic-bezier(0.22,1,0.36,1);
+  }
 
   .turno-opcion input:checked + label {
     border-color: var(--verde);
-    background: var(--verde-claro);
+    background: linear-gradient(148deg, var(--verde-claro), #edf8f3);
     color: var(--verde-oscuro);
-    box-shadow: 0 0 0 3px rgba(0,132,90,0.10);
+    box-shadow: 0 0 0 3px rgba(0,132,90,0.10), var(--sombra-sm);
+    transform: translateY(-2px);
   }
+
+  .turno-opcion input:checked + label .emoji       { transform: scale(1.18); }
+  .turno-opcion input:checked + label .turno-nombre { color: var(--verde-oscuro); }
+  .turno-opcion input:checked + label .turno-horas  { color: var(--verde); font-weight: 500; }
+  .turno-opcion input:checked + label::after        { opacity: 1; transform: scale(1); }
 
   .turno-opcion label:hover {
-    border-color: var(--verde);
-    background: var(--verde-claro);
+    border-color: var(--verde-medio);
+    background: #f0faf5;
+    transform: translateY(-1px);
   }
 
-  /* Vac selector */
+  /* ── VAC SELECTOR ───────────────────────── */
   .vac-grupo {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -234,6 +333,7 @@
     position: absolute;
     opacity: 0;
     width: 0;
+    height: 0;
   }
 
   .vac-opcion label {
@@ -241,60 +341,119 @@
     flex-direction: column;
     align-items: center;
     gap: 3px;
-    padding: 12px 6px;
+    padding: 14px 6px 11px;
     border: 1.5px solid var(--borde);
-    border-radius: 10px;
+    border-radius: 13px;
     cursor: pointer;
     background: var(--gris-claro);
-    transition: all 0.2s;
+    transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
     text-align: center;
-    font-size: 0.78rem;
     color: var(--gris);
     margin: 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 82px;
+    justify-content: center;
+    user-select: none;
   }
 
   .vac-opcion label .num {
     font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
+    font-size: 1.75rem;
     color: var(--tinta);
     line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .vac-opcion label .vac-tipo {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: var(--gris);
+    transition: color 0.2s;
+    font-weight: 400;
+  }
+
+  /* auto badge */
+  .vac-opcion label .auto-tag {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--verde);
+    color: #fff;
+    font-size: 0.52rem;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: scale(0.6) translateY(-2px);
+    transition: opacity 0.2s, transform 0.22s cubic-bezier(0.22,1,0.36,1);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .vac-opcion input:checked + label .auto-tag.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 
   .vac-opcion input:checked + label {
     border-color: var(--verde);
-    background: var(--verde-claro);
+    background: linear-gradient(148deg, var(--verde-claro), #edf8f3);
     color: var(--verde-oscuro);
-    box-shadow: 0 0 0 3px rgba(0,132,90,0.10);
+    box-shadow: 0 0 0 3px rgba(0,132,90,0.10), var(--sombra-sm);
+    transform: translateY(-2px);
   }
 
-  .vac-opcion input:checked + label .num {
-    color: var(--verde-oscuro);
-  }
+  .vac-opcion input:checked + label .num      { color: var(--verde-oscuro); }
+  .vac-opcion input:checked + label .vac-tipo { color: var(--verde); font-weight: 500; }
 
   .vac-opcion label:hover {
-    border-color: var(--verde);
-    background: var(--verde-claro);
+    border-color: var(--verde-medio);
+    background: #f0faf5;
+    transform: translateY(-1px);
   }
 
-  /* ── BOTÓN ──────────────────────────────── */
+  /* ── BOTÓN CALCULAR ──────────────────────── */
   .btn-calcular {
     width: 100%;
-    padding: 15px;
-    background: var(--verde);
+    padding: 16px;
+    background: linear-gradient(135deg, var(--verde-brillo) 0%, var(--verde) 50%, var(--verde-oscuro) 100%);
+    background-size: 200% 200%;
+    background-position: 0% 50%;
     color: #fff;
     border: none;
-    border-radius: 11px;
+    border-radius: 13px;
     font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    transition: transform 0.18s, box-shadow 0.2s, background-position 0.4s;
     letter-spacing: 0.02em;
     margin-top: 4px;
+    box-shadow: 0 4px 18px rgba(0,132,90,0.32);
+    position: relative;
+    overflow: hidden;
   }
 
-  .btn-calcular:hover { background: var(--verde-oscuro); }
-  .btn-calcular:active { transform: scale(0.98); }
+  .btn-calcular::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .btn-calcular:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,132,90,0.38);
+    background-position: 100% 50%;
+  }
+
+  .btn-calcular:hover::before { transform: translateX(100%); }
+  .btn-calcular:active { transform: scale(0.98) translateY(0); }
 
   .btn-reset {
     width: 100%;
@@ -302,77 +461,106 @@
     background: transparent;
     color: var(--gris);
     border: 1.5px solid var(--borde);
-    border-radius: 11px;
+    border-radius: 13px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 8px;
     transition: all 0.2s;
   }
 
-  .btn-reset:hover { border-color: var(--gris); color: var(--tinta); }
+  .btn-reset:hover {
+    border-color: var(--gris);
+    color: var(--tinta);
+    background: var(--gris-claro);
+  }
 
-  /* ── RESULTADOS ────────────────────────── */
+  /* ── RESULTADOS ─────────────────────────── */
   #resultados {
     display: none;
-    animation: slideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+    animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
   }
 
   #resultados.visible { display: block; }
 
   @keyframes slideUp {
-    from { opacity: 0; transform: translateY(18px); }
+    from { opacity: 0; transform: translateY(22px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* Hero */
   .resultado-hero {
-    background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde) 100%);
+    background: linear-gradient(140deg, var(--verde-oscuro) 0%, #00704a 55%, var(--verde-brillo) 100%);
     border-radius: var(--radio);
-    padding: 28px 24px;
-    margin-bottom: 16px;
-    color: #fff;
+    padding: 8px;
+    margin-bottom: 14px;
+    box-shadow: var(--sombra-lg);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    box-shadow: 0 8px 32px rgba(0,132,90,0.25);
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .resultado-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 75% 20%, rgba(255,255,255,0.09) 0%, transparent 55%);
+    pointer-events: none;
   }
 
   @media (max-width: 500px) {
-    .resultado-hero { grid-template-columns: 1fr; gap: 16px; }
+    .resultado-hero { grid-template-columns: 1fr; gap: 5px; }
   }
 
-  .hero-stat { text-align: center; }
+  .hero-stat {
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.11);
+    border-radius: 10px;
+    padding: 20px 12px 16px;
+  }
+
+  .hero-stat .icon {
+    font-size: 1.15rem;
+    display: block;
+    margin-bottom: 7px;
+    opacity: 0.85;
+  }
 
   .hero-stat .val {
     font-family: 'DM Serif Display', serif;
     font-size: clamp(2rem, 6vw, 2.8rem);
     line-height: 1;
     display: block;
+    color: #fff;
   }
 
   .hero-stat .eti {
-    font-size: 0.75rem;
-    opacity: 0.8;
-    margin-top: 4px;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.68);
+    margin-top: 6px;
     display: block;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
   }
 
-  .hero-sep {
-    width: 1px;
-    background: rgba(255,255,255,0.2);
-    margin: 0 auto;
-    display: none;
+  /* Resultado cards stagger */
+  #resultados > .card {
+    animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
   }
 
-  @media (min-width: 501px) { .hero-sep { display: block; } }
+  #resultados > .card:nth-child(3)  { animation-delay: 0.04s; }
+  #resultados > .card:nth-child(4)  { animation-delay: 0.08s; }
+  #resultados > .card:nth-child(5)  { animation-delay: 0.12s; }
+  #resultados > .card:nth-child(6)  { animation-delay: 0.16s; }
 
-  /* Grids de resultados secundarios */
+  /* Grids de resultados */
   .res-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   @media (max-width: 500px) { .res-grid { grid-template-columns: 1fr; } }
@@ -381,7 +569,7 @@
     background: var(--gris-claro);
     border: 1px solid var(--borde);
     border-radius: 10px;
-    padding: 16px;
+    padding: 14px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -389,9 +577,9 @@
   }
 
   .res-item .etiqueta {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--gris);
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .res-item .numero {
@@ -404,26 +592,31 @@
 
   .res-item .unidad {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--gris);
     font-weight: 400;
   }
 
   .res-item.destacado {
-    border-color: var(--verde);
-    background: var(--verde-claro);
+    border-color: var(--verde-medio);
+    border-left: 3px solid var(--verde);
+    background: linear-gradient(148deg, var(--verde-claro), #edf8f3);
   }
 
-  .res-item.destacado .etiqueta { color: var(--verde-oscuro); }
+  .res-item.destacado .etiqueta {
+    color: var(--verde-oscuro);
+    font-weight: 500;
+  }
 
   /* Aviso redondeo */
   .aviso {
-    background: #fff8ed;
-    border: 1px solid #f5c97a;
+    background: #fffbf0;
+    border: 1px solid #f0c060;
+    border-left: 3px solid var(--amarillo);
     border-radius: 9px;
-    padding: 12px 16px;
-    font-size: 0.82rem;
-    color: #7a5a00;
+    padding: 12px 14px;
+    font-size: 0.81rem;
+    color: #6b4800;
     display: flex;
     gap: 10px;
     align-items: flex-start;
@@ -434,11 +627,12 @@
   .error-msg {
     background: #fff0ee;
     border: 1px solid #e8a49a;
+    border-left: 3px solid var(--rojo);
     border-radius: 9px;
-    padding: 12px 16px;
-    font-size: 0.85rem;
+    padding: 12px 14px;
+    font-size: 0.84rem;
     color: var(--rojo);
-    margin-top: 12px;
+    margin-top: 10px;
     display: none;
   }
 
@@ -447,52 +641,74 @@
   /* ── FOOTER ─────────────────────────────── */
   footer {
     text-align: center;
-    padding: 24px 16px;
-    font-size: 0.75rem;
+    padding: 20px 16px;
+    font-size: 0.73rem;
     color: var(--gris);
     border-top: 1px solid var(--borde);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .footer-privacidad {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--verde);
+    font-weight: 500;
+    font-size: 0.7rem;
   }
 
   .divider {
     height: 1px;
     background: var(--borde);
-    margin: 20px 0;
+    margin: 16px 0;
   }
 
   /* Nota info */
   .nota {
     font-size: 0.78rem;
     color: var(--gris);
-    line-height: 1.5;
-    margin-top: 10px;
+    line-height: 1.6;
+    background: var(--gris-claro);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 12px 14px;
   }
 
   .nota strong { color: var(--tinta); }
 
-  /* Boton imprimir */
+  /* Botón imprimir */
   .btn-imprimir {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    background: transparent;
+    background: #fff;
     border: 1.5px solid var(--borde);
-    border-radius: 8px;
+    border-radius: 9px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.81rem;
     color: var(--gris);
     cursor: pointer;
-    margin-top: 16px;
     transition: all 0.2s;
     float: right;
+    margin-bottom: 10px;
   }
 
-  .btn-imprimir:hover { border-color: var(--verde); color: var(--verde); }
+  .btn-imprimir:hover {
+    border-color: var(--verde);
+    color: var(--verde);
+    background: var(--verde-claro);
+  }
 
   @media print {
     header, footer, .btn-calcular, .btn-reset, .btn-imprimir, #formulario { display: none !important; }
     #resultados { display: block !important; }
-    body { background: white; }
+    body { background: white; background-image: none; }
+    .resultado-hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
@@ -501,10 +717,11 @@
 <header>
   <div class="header-inner">
     <div class="logo-badge">🏥</div>
-    <div>
+    <div class="header-texto">
       <h1>Calculadora de Jornada y Vacaciones</h1>
       <p>Hospital Universitario Virgen de las Nieves · RRHH</p>
     </div>
+    <div class="header-badge">v2025</div>
   </div>
 </header>
 
@@ -516,7 +733,7 @@
 
       <!-- Fechas -->
       <div class="card full">
-        <div class="card-titulo">📅 Período del nombramiento</div>
+        <div class="card-titulo"><span class="paso">1</span> Período del nombramiento</div>
         <div class="grid">
           <div class="campo">
             <label for="fecha-inicio">Fecha de inicio</label>
@@ -527,32 +744,35 @@
             <input type="date" id="fecha-fin">
           </div>
         </div>
-        <div class="error-msg" id="error-fechas">⚠️ La fecha de fin debe ser posterior a la fecha de inicio.</div>
+        <div class="error-msg" id="error-fechas"></div>
       </div>
 
       <!-- Tipo de turno -->
       <div class="card full">
-        <div class="card-titulo">⏰ Tipo de turno</div>
+        <div class="card-titulo"><span class="paso">2</span> Tipo de turno</div>
         <div class="turno-grupo">
           <div class="turno-opcion">
             <input type="radio" name="turno" id="t-mañanas" value="mañanas">
             <label for="t-mañanas">
               <span class="emoji">☀️</span>
-              Mañanas
+              <span class="turno-nombre">Mañanas</span>
+              <span class="turno-horas">1.540 h/año</span>
             </label>
           </div>
           <div class="turno-opcion">
             <input type="radio" name="turno" id="t-rotatorio" value="rotatorio" checked>
             <label for="t-rotatorio">
               <span class="emoji">🔄</span>
-              Rotatorio
+              <span class="turno-nombre">Rotatorio</span>
+              <span class="turno-horas">1.483 h/año</span>
             </label>
           </div>
           <div class="turno-opcion">
             <input type="radio" name="turno" id="t-noches" value="noches">
             <label for="t-noches">
               <span class="emoji">🌙</span>
-              Noches
+              <span class="turno-nombre">Noches</span>
+              <span class="turno-horas">1.450 h/año</span>
             </label>
           </div>
         </div>
@@ -560,41 +780,44 @@
 
       <!-- Tipo de vacaciones -->
       <div class="card full">
-        <div class="card-titulo">🏖️ Días de vacaciones anuales</div>
+        <div class="card-titulo"><span class="paso">3</span> Días de vacaciones anuales</div>
         <div class="vac-grupo">
           <div class="vac-opcion">
             <input type="radio" name="vacaciones" id="v-30" value="30">
             <label for="v-30">
+              <span class="auto-tag" id="auto-tag-30">auto</span>
               <span class="num">30</span>
-              días naturales
+              <span class="vac-tipo">días naturales</span>
             </label>
           </div>
           <div class="vac-opcion">
             <input type="radio" name="vacaciones" id="v-26" value="26" checked>
             <label for="v-26">
+              <span class="auto-tag" id="auto-tag-26">auto</span>
               <span class="num">26</span>
-              días laborales
+              <span class="vac-tipo">días laborales</span>
             </label>
           </div>
           <div class="vac-opcion">
             <input type="radio" name="vacaciones" id="v-22" value="22">
             <label for="v-22">
+              <span class="auto-tag" id="auto-tag-22">auto</span>
               <span class="num">22</span>
-              días laborales
+              <span class="vac-tipo">días laborales</span>
             </label>
           </div>
         </div>
-        <p class="nota" style="margin-top:12px;">
-          <strong>¿Cuántos días te corresponden?</strong><br>
-          30 días naturales → Personal estatutario y funcionario.<br>
-          26 días laborales → Personal laboral rotatorio / noches.<br>
-          22 días laborales → Personal laboral turno fijo diurno.
+        <p class="nota" style="margin-top:12px; background:none; border:none; padding:0; font-size:0.75rem;">
+          <strong>Referencia:</strong>
+          30 naturales → estatutario / funcionario &nbsp;·&nbsp;
+          26 laborales → laboral rotatorio / noches &nbsp;·&nbsp;
+          22 laborales → laboral turno fijo diurno
         </p>
       </div>
 
       <!-- Botón -->
       <div class="full">
-        <button class="btn-calcular" onclick="calcular()">Calcular mi jornada →</button>
+        <button class="btn-calcular" onclick="calcular()">Calcular mi jornada &rarr;</button>
         <button class="btn-reset" onclick="resetear()">Limpiar formulario</button>
       </div>
 
@@ -605,28 +828,29 @@
   <div id="resultados">
 
     <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir</button>
-    <div style="clear:both; height: 4px;"></div>
+    <div style="clear:both; height:6px;"></div>
 
     <!-- Hero stats -->
     <div class="resultado-hero">
       <div class="hero-stat">
+        <span class="icon">📅</span>
         <span class="val" id="r-dias">—</span>
         <span class="eti">días de contrato</span>
       </div>
-      <div class="hero-sep"></div>
       <div class="hero-stat">
+        <span class="icon">⏱️</span>
         <span class="val" id="r-horas">—</span>
         <span class="eti">horas a trabajar</span>
       </div>
-      <div class="hero-sep"></div>
       <div class="hero-stat">
+        <span class="icon">🏖️</span>
         <span class="val" id="r-vac">—</span>
         <span class="eti">días de vacaciones</span>
       </div>
     </div>
 
     <!-- Resumen período -->
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card" style="margin-bottom:12px;">
       <div class="card-titulo">📋 Resumen del nombramiento</div>
       <div class="res-grid">
         <div class="res-item destacado">
@@ -649,7 +873,7 @@
     </div>
 
     <!-- Jornada -->
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card" style="margin-bottom:12px;">
       <div class="card-titulo">⏱️ Jornada efectiva</div>
       <div class="res-grid">
         <div class="res-item destacado">
@@ -672,7 +896,7 @@
     </div>
 
     <!-- Vacaciones -->
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card" style="margin-bottom:12px;">
       <div class="card-titulo">🏖️ Vacaciones proporcionales</div>
       <div class="res-grid">
         <div class="res-item destacado">
@@ -689,7 +913,7 @@
       </div>
     </div>
 
-    <!-- Referencia jornada anual -->
+    <!-- Referencia convenio -->
     <div class="card">
       <div class="card-titulo">📊 Referencia convenio</div>
       <div class="res-grid">
@@ -706,12 +930,12 @@
 
     <div class="divider"></div>
     <p class="nota">
-      ⚠️ <strong>Aviso legal:</strong> Esta calculadora es una herramienta orientativa basada en las tablas del convenio. 
-      En caso de duda, consulta siempre con el Servicio de Recursos Humanos del hospital. 
+      ⚠️ <strong>Aviso legal:</strong> Esta calculadora es una herramienta orientativa basada en las tablas del convenio.
+      En caso de duda, consulta siempre con el Servicio de Recursos Humanos del hospital.
       Los resultados no constituyen documento oficial.
     </p>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top:20px;">
       <button class="btn-reset" onclick="volver()" style="max-width:300px;">← Hacer otro cálculo</button>
     </div>
 
@@ -720,8 +944,8 @@
 </main>
 
 <footer>
-  Calculadora de Jornada · Servicio de RRHH · Hospital Universitario Virgen de las Nieves<br>
-  Los datos introducidos no se almacenan en ningún servidor.
+  <span>Calculadora de Jornada · Servicio de RRHH · Hospital Universitario Virgen de las Nieves</span>
+  <span class="footer-privacidad">🔒 Los datos introducidos no se almacenan en ningún servidor</span>
 </footer>
 
 <script>
@@ -729,13 +953,18 @@
 function actualizarVacacionesPorTurno(turno) {
   const vacId = turno === 'mañanas' ? 'v-22' : 'v-26';
   document.getElementById(vacId).checked = true;
+  // Mostrar badge "auto" en la opción correspondiente
+  ['auto-tag-30', 'auto-tag-26', 'auto-tag-22'].forEach(id => {
+    document.getElementById(id).classList.remove('visible');
+  });
+  const tagId = turno === 'mañanas' ? 'auto-tag-22' : 'auto-tag-26';
+  document.getElementById(tagId).classList.add('visible');
 }
 
 document.querySelectorAll('input[name="turno"]').forEach(radio => {
   radio.addEventListener('change', e => actualizarVacacionesPorTurno(e.target.value));
 });
 
-// Aplicar al cargar según el turno que esté marcado por defecto
 document.addEventListener('DOMContentLoaded', () => {
   const turnoInicial = document.querySelector('input[name="turno"]:checked')?.value;
   if (turnoInicial) actualizarVacacionesPorTurno(turnoInicial);
@@ -762,7 +991,6 @@ function esAñoBisiesto(año) {
 }
 
 function diasEnElAño(fecha) {
-  // Si el contrato cruza un año bisiesto, prioridad al año con más días del contrato
   return esAñoBisiesto(fecha.getFullYear()) ? 366 : 365;
 }
 
@@ -787,7 +1015,6 @@ function calcular() {
   const turno = document.querySelector('input[name="turno"]:checked')?.value;
   const diasVacAnuales = parseInt(document.querySelector('input[name="vacaciones"]:checked')?.value);
 
-  // Validar fechas
   const errEl = document.getElementById('error-fechas');
   if (!fi || !ff) {
     errEl.textContent = '⚠️ Por favor, introduce ambas fechas.';
@@ -815,41 +1042,34 @@ function calcular() {
   const reduccion33    = (horasEfectivas / 3) * 2;
   const reduccion50    = horasEfectivas / 2;
 
-  // Jornada neta: divisor = días del año - días de vacaciones anuales
   const diasLaboralesNetos = diasAño - diasVacAnuales;
   const jornadaNeta = horasAnuales * diasContrato / diasLaboralesNetos;
 
-  // Vacaciones proporcionales
-  const vacRaw       = diasContrato * diasVacAnuales / diasAño;
+  const vacRaw        = diasContrato * diasVacAnuales / diasAño;
   const vacRedondeada = redondearVacaciones(vacRaw);
   const fraccion      = vacRaw - Math.floor(vacRaw);
 
   // ─── Rellenar resultados ───────────────────────
-  // Hero
   document.getElementById('r-dias').textContent    = diasContrato;
   document.getElementById('r-horas').textContent   = fmtInt(horasEfectivas);
   document.getElementById('r-vac').textContent     = vacRedondeada;
 
-  // Resumen
   document.getElementById('r-fecha-inicio').textContent = formatFecha(fi);
   document.getElementById('r-fecha-fin').textContent    = formatFecha(ff);
   document.getElementById('r-turno').textContent        = ETIQUETAS_TURNO[turno];
   document.getElementById('r-tipo-vac').textContent     = `${diasVacAnuales} días`;
 
-  // Jornada
   document.getElementById('r-horas-ef').textContent = fmt2(horasEfectivas);
   document.getElementById('r-red33').textContent    = fmt2(reduccion33);
   document.getElementById('r-red50').textContent    = fmt2(reduccion50);
   document.getElementById('r-neta').textContent     = fmt2(jornadaNeta);
 
-  // Vacaciones
-  document.getElementById('r-vac-calc').textContent = vacRedondeada;
-  document.getElementById('r-vac-raw').textContent  = fmt2(vacRaw);
+  document.getElementById('r-vac-calc').textContent     = vacRedondeada;
+  document.getElementById('r-vac-raw').textContent      = fmt2(vacRaw);
   document.getElementById('r-horas-anuales').textContent = horasAnuales;
-  document.getElementById('r-dias-año').textContent = diasAño;
+  document.getElementById('r-dias-año').textContent     = diasAño;
 
-  // Aviso redondeo
-  const avisoEl = document.getElementById('aviso-redondeo');
+  const avisoEl    = document.getElementById('aviso-redondeo');
   const textoAviso = document.getElementById('texto-aviso-redondeo');
   if (fraccion > 0 && fraccion < 1) {
     avisoEl.style.display = 'flex';
@@ -862,7 +1082,6 @@ function calcular() {
     avisoEl.style.display = 'none';
   }
 
-  // Mostrar resultados
   document.getElementById('formulario').style.display = 'none';
   const resEl = document.getElementById('resultados');
   resEl.classList.add('visible');
