@@ -725,6 +725,22 @@
 </footer>
 
 <script>
+// ── AUTO-SELECCIÓN DE VACACIONES SEGÚN TURNO ────────────────────────────────
+function actualizarVacacionesPorTurno(turno) {
+  const vacId = turno === 'mañanas' ? 'v-22' : 'v-26';
+  document.getElementById(vacId).checked = true;
+}
+
+document.querySelectorAll('input[name="turno"]').forEach(radio => {
+  radio.addEventListener('change', e => actualizarVacacionesPorTurno(e.target.value));
+});
+
+// Aplicar al cargar según el turno que esté marcado por defecto
+document.addEventListener('DOMContentLoaded', () => {
+  const turnoInicial = document.querySelector('input[name="turno"]:checked')?.value;
+  if (turnoInicial) actualizarVacacionesPorTurno(turnoInicial);
+});
+
 // ── CONSTANTES DEL CONVENIO ─────────────────────────────────────────────────
 const CONVENIO = {
   horas: {
@@ -863,7 +879,7 @@ function resetear() {
   document.getElementById('fecha-inicio').value = '';
   document.getElementById('fecha-fin').value = '';
   document.getElementById('t-rotatorio').checked = true;
-  document.getElementById('v-26').checked = true;
+  actualizarVacacionesPorTurno('rotatorio');
   document.getElementById('error-fechas').classList.remove('visible');
 }
 </script>
