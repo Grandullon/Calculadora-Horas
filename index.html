@@ -11,24 +11,24 @@
   <style>
     /* ── CUSTOM PROPERTIES ───────────────────────────────────────── */
     :root {
-      --g900: #003a1a;
-      --g800: #00541f;
-      --g700: #006f28;
-      --g600: #008a32;
-      --g500: #00a63d;
-      --g400: #33b85a;
-      --g200: #99dcae;
-      --g100: #ccedd7;
-      --g50:  #f0f9f3;
+      --g900: #012a6b;
+      --g800: #023e8a;
+      --g700: #0077b6;
+      --g600: #0096c7;
+      --g500: #00b4d8;
+      --g400: #48cae4;
+      --g200: #ade8f4;
+      --g100: #caf0f8;
+      --g50:  #eff9fc;
 
-      --text:      #0a1a0f;
-      --text-sec:  #3a5a44;
-      --text-muted:#6a8c75;
+      --text:      #071a2e;
+      --text-sec:  #1e4976;
+      --text-muted:#5a7fa0;
 
-      --bg:        #f4faf6;
+      --bg:        #f2f8fc;
       --bg-card:   #ffffff;
-      --border:    #c5e2cc;
-      --border-focus: #006f28;
+      --border:    #b8d8ee;
+      --border-focus: #0077b6;
 
       --red:       #c0392b;
       --red-bg:    #fdf1f0;
@@ -62,7 +62,7 @@
 
     /* ── HEADER ──────────────────────────────────────────────────── */
     header {
-      background: linear-gradient(150deg, var(--g900) 0%, var(--g700) 60%, var(--g600) 100%);
+      background: linear-gradient(150deg, var(--g900) 0%, var(--g700) 55%, var(--g600) 100%);
       color: #fff;
       padding: 2.25rem 1.5rem 2.75rem;
       text-align: center;
@@ -73,21 +73,16 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M30 28v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-26V0h-2v2h-4v2h4v2h2V4h4V2h-4zM4 28v-4H2v4H0v2h2v4h2v-4h4v-2H4zM4 2V0H2v2H0v2h2v2h2V4h4V2H4z'/%3E%3C/g%3E%3C/svg%3E");
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Crect x='26' y='10' width='8' height='40' rx='2'/%3E%3Crect x='10' y='26' width='40' height='8' rx='2'/%3E%3C/g%3E%3C/svg%3E");
       pointer-events: none;
     }
-    .header-badge {
-      display: inline-block;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.25);
-      border-radius: 20px;
-      padding: .25rem .9rem;
-      font-size: .72rem;
-      font-weight: 500;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-      margin-bottom: .8rem;
+    .header-icon {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: .6rem;
       position: relative;
+      display: block;
+      opacity: .9;
     }
     header h1 {
       font-family: 'DM Serif Display', Georgia, serif;
@@ -426,7 +421,7 @@
     code {
       font-family: 'Courier New', monospace;
       font-size: .85em;
-      background: #e9f2eb;
+      background: #ddf0f8;
       color: var(--g700);
       padding: .1em .35em;
       border-radius: 3px;
@@ -479,10 +474,10 @@
         background: white !important;
         color: black !important;
         padding: 0 0 .75rem;
-        border-bottom: 2pt solid #003a1a;
+        border-bottom: 2pt solid #012a6b;
       }
-      .header-badge { display: none; }
-      header h1 { color: #003a1a !important; font-size: 16pt; }
+      .header-icon { color: #012a6b !important; }
+      header h1 { color: #012a6b !important; font-size: 16pt; }
       header p { color: #555 !important; opacity: 1; font-size: 9pt; }
 
       main { padding: 1rem 0 0; max-width: 100%; }
@@ -528,7 +523,7 @@
 <body>
 
 <header>
-  <div class="header-badge">Recursos Humanos</div>
+  <span class="header-icon">🏥</span>
   <h1>Calculadora de Jornada</h1>
   <p>Hospital Universitario Virgen de las Nieves · Granada</p>
 </header>
