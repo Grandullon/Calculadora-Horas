@@ -544,7 +544,7 @@
       <p class="sec-label">1 · Tipo de turno</p>
       <div class="turno-grid">
         <div class="turno-opt">
-          <input type="radio" name="turno" id="t-man" value="mananas" checked>
+          <input type="radio" name="turno" id="t-man" value="mananas" checked onchange="syncVac(this)">
           <label for="t-man">
             <span class="t-icon">☀️</span>
             <span class="t-name">Fijo mañanas</span>
@@ -552,7 +552,7 @@
           </label>
         </div>
         <div class="turno-opt">
-          <input type="radio" name="turno" id="t-rot" value="rotatorio">
+          <input type="radio" name="turno" id="t-rot" value="rotatorio" onchange="syncVac(this)">
           <label for="t-rot">
             <span class="t-icon">🔄</span>
             <span class="t-name">Rotatorio</span>
@@ -560,7 +560,7 @@
           </label>
         </div>
         <div class="turno-opt">
-          <input type="radio" name="turno" id="t-noc" value="noches">
+          <input type="radio" name="turno" id="t-noc" value="noches" onchange="syncVac(this)">
           <label for="t-noc">
             <span class="t-icon">🌙</span>
             <span class="t-name">Noches</span>
@@ -572,13 +572,6 @@
       <!-- STEP 2: Vacaciones -->
       <p class="sec-label">2 · Días de vacaciones anuales</p>
       <div class="vac-list">
-        <div class="vac-opt">
-          <input type="radio" name="vac" id="v-30" value="30">
-          <label for="v-30">
-            <strong>30 días naturales</strong>
-            <span>Personal estatutario / funcionario</span>
-          </label>
-        </div>
         <div class="vac-opt">
           <input type="radio" name="vac" id="v-26" value="26">
           <label for="v-26">
@@ -756,12 +749,6 @@
             <td>26 días laborales</td>
             <td>Personal laboral nocturno</td>
           </tr>
-          <tr>
-            <td>Cualquiera</td>
-            <td>Según turno</td>
-            <td>30 días naturales</td>
-            <td>Personal estatutario / funcionario</td>
-          </tr>
         </tbody>
       </table>
       <div class="ref-formulas">
@@ -790,6 +777,14 @@
 <script>
 // ── CONSTANTS ─────────────────────────────────────────────────────────────
 const HORAS_TURNO = { mananas: 1540, rotatorio: 1483, noches: 1450 };
+const VAC_TURNO   = { mananas: 22, rotatorio: 26, noches: 26 };
+
+// ── AUTO-SELECT VACACIONES BY TURNO ────────────────────────────────────────
+function syncVac(radio) {
+  const dias = VAC_TURNO[radio.value];
+  const el = document.getElementById('v-' + dias);
+  if (el) el.checked = true;
+}
 
 // ── DATE UTILITIES ─────────────────────────────────────────────────────────
 
@@ -1091,7 +1086,7 @@ function loadFromUrl() {
   const turno = p.get('turno');
   if (turno) {
     const el = document.querySelector(`input[name="turno"][value="${CSS.escape(turno)}"]`);
-    if (el) el.checked = true;
+    if (el) { el.checked = true; syncVac(el); }
   }
 
   const vac = p.get('vac');
