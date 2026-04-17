@@ -134,6 +134,7 @@
       gap: .65rem;
       margin-bottom: 1.6rem;
     }
+    .turno-grid.pct-grid { grid-template-columns: repeat(4, 1fr); }
     .turno-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
     .turno-opt label {
       display: flex;
@@ -444,6 +445,7 @@
       .card-body { padding: 1.2rem; }
 
       .turno-grid { grid-template-columns: 1fr; gap: .5rem; }
+      .turno-grid.pct-grid { grid-template-columns: repeat(2, 1fr); }
       .turno-opt label {
         flex-direction: row;
         gap: .75rem;
@@ -535,11 +537,11 @@
   <div class="card">
     <div class="card-body">
 
-      <!-- STEP 1: Turno -->
-      <p class="sec-label">1 · Tipo de turno</p>
+      <!-- STEP 1: Tipo de jornada -->
+      <p class="sec-label">1 · Tipo de jornada</p>
       <div class="turno-grid">
         <div class="turno-opt">
-          <input type="radio" name="turno" id="t-man" value="mananas" checked onchange="syncVac(this)">
+          <input type="radio" name="turno" id="t-man" value="mananas" checked>
           <label for="t-man">
             <span class="t-icon">☀️</span>
             <span class="t-name">Fijo mañanas</span>
@@ -547,7 +549,7 @@
           </label>
         </div>
         <div class="turno-opt">
-          <input type="radio" name="turno" id="t-rot" value="rotatorio" onchange="syncVac(this)">
+          <input type="radio" name="turno" id="t-rot" value="rotatorio">
           <label for="t-rot">
             <span class="t-icon">🔄</span>
             <span class="t-name">Rotatorio</span>
@@ -555,7 +557,7 @@
           </label>
         </div>
         <div class="turno-opt">
-          <input type="radio" name="turno" id="t-noc" value="noches" onchange="syncVac(this)">
+          <input type="radio" name="turno" id="t-noc" value="noches">
           <label for="t-noc">
             <span class="t-icon">🌙</span>
             <span class="t-name">Noches</span>
@@ -564,27 +566,8 @@
         </div>
       </div>
 
-      <!-- STEP 2: Vacaciones -->
-      <p class="sec-label">2 · Días de vacaciones anuales</p>
-      <div class="vac-list">
-        <div class="vac-opt">
-          <input type="radio" name="vac" id="v-26" value="26">
-          <label for="v-26">
-            <strong>26 días laborales</strong>
-            <span>Personal laboral rotatorio / noches</span>
-          </label>
-        </div>
-        <div class="vac-opt">
-          <input type="radio" name="vac" id="v-22" value="22" checked>
-          <label for="v-22">
-            <strong>22 días laborales</strong>
-            <span>Personal laboral turno fijo diurno</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- STEP 3: Fechas -->
-      <p class="sec-label">3 · Periodo del nombramiento / contrato</p>
+      <!-- STEP 2: Fechas -->
+      <p class="sec-label">2 · Periodo del nombramiento / contrato</p>
       <div class="dates-grid">
         <div class="field">
           <label for="f-ini">Fecha de inicio <em>*</em></label>
@@ -592,9 +575,42 @@
                  min="1990-01-01" max="2050-12-31">
         </div>
         <div class="field">
-          <label for="f-fin">Fecha de fin <em>*</em></label>
+          <label for="f-fin">Fecha de fin</label>
           <input type="date" id="f-fin" name="f-fin"
                  min="1990-01-01" max="2050-12-31">
+        </div>
+      </div>
+
+      <!-- STEP 3: Porcentaje de jornada -->
+      <p class="sec-label">3 · Porcentaje de jornada</p>
+      <div class="turno-grid pct-grid">
+        <div class="turno-opt">
+          <input type="radio" name="pct" id="p-33" value="33">
+          <label for="p-33">
+            <span class="t-name">33%</span>
+            <span class="t-hours">Un tercio</span>
+          </label>
+        </div>
+        <div class="turno-opt">
+          <input type="radio" name="pct" id="p-50" value="50">
+          <label for="p-50">
+            <span class="t-name">50%</span>
+            <span class="t-hours">Media jornada</span>
+          </label>
+        </div>
+        <div class="turno-opt">
+          <input type="radio" name="pct" id="p-60" value="60">
+          <label for="p-60">
+            <span class="t-name">60%</span>
+            <span class="t-hours">Parcial</span>
+          </label>
+        </div>
+        <div class="turno-opt">
+          <input type="radio" name="pct" id="p-100" value="100" checked>
+          <label for="p-100">
+            <span class="t-name">100%</span>
+            <span class="t-hours">Completa</span>
+          </label>
         </div>
       </div>
 
@@ -676,7 +692,10 @@
       <!-- Detail rows -->
       <div class="res-details">
         <div class="detail-row">
-          <span class="detail-label">Horas efectivas a trabajar</span>
+          <span class="detail-label">
+            Horas efectivas a trabajar
+            <small id="r-horas-ef-sub"></small>
+          </span>
           <span class="detail-value"><span id="r-horas-ef"></span><span class="unit">h</span></span>
         </div>
         <div class="detail-row">
@@ -685,20 +704,6 @@
             <small>Divisor: días del año menos días de vacaciones</small>
           </span>
           <span class="detail-value"><span id="r-jornada-neta"></span><span class="unit">h</span></span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">
-            Con reducción de jornada 1/3
-            <small>Conserva 2/3 de las horas efectivas</small>
-          </span>
-          <span class="detail-value"><span id="r-red-33"></span><span class="unit">h</span></span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">
-            Con reducción de jornada 50%
-            <small>Conserva la mitad de las horas efectivas</small>
-          </span>
-          <span class="detail-value"><span id="r-red-50"></span><span class="unit">h</span></span>
         </div>
       </div>
 
@@ -773,13 +778,6 @@
 // ── CONSTANTS ─────────────────────────────────────────────────────────────
 const HORAS_TURNO = { mananas: 1540, rotatorio: 1483, noches: 1450 };
 const VAC_TURNO   = { mananas: 22, rotatorio: 26, noches: 26 };
-
-// ── AUTO-SELECT VACACIONES BY TURNO ────────────────────────────────────────
-function syncVac(radio) {
-  const dias = VAC_TURNO[radio.value];
-  const el = document.getElementById('v-' + dias);
-  if (el) el.checked = true;
-}
 
 // ── DATE UTILITIES ─────────────────────────────────────────────────────────
 
@@ -881,22 +879,22 @@ function calcular() {
   clearError();
 
   const turno = document.querySelector('input[name="turno"]:checked').value;
-  const vac   = parseInt(document.querySelector('input[name="vac"]:checked').value, 10);
+  const vac   = VAC_TURNO[turno];
+  const pct   = parseInt(document.querySelector('input[name="pct"]:checked').value, 10);
   const strIni = document.getElementById('f-ini').value;
-  const strFin = document.getElementById('f-fin').value;
+  const finInput = document.getElementById('f-fin');
+  let strFin = finInput.value;
 
-  // Validation: empty fields
-  if (!strIni && !strFin) {
-    showError('Introduce las fechas de inicio y fin del nombramiento.', 'f-ini', 'f-fin');
-    return;
-  }
+  // Validation: inicio es obligatorio
   if (!strIni) {
     showError('Introduce la fecha de inicio del nombramiento.', 'f-ini');
     return;
   }
+
+  // Si no hay fecha fin, usar 31/12 del año en curso
   if (!strFin) {
-    showError('Introduce la fecha de fin del nombramiento.', 'f-fin');
-    return;
+    strFin = `${new Date().getFullYear()}-12-31`;
+    finInput.value = strFin;
   }
 
   const dIni = parseDate(strIni);
@@ -926,11 +924,11 @@ function calcular() {
   const diasContrato = daysBetween(dIni, dFin);
   const esMultianual = yIni !== yFin;
 
-  const { horasEf, jornadaNeta, vacRaw } = calcularPonderado(dIni, dFin, horasAnuales, vac);
-
-  // Derived values — formula from hoja `visible`: (h/3)*2
-  const red33 = (horasEf / 3) * 2;
-  const red50 = horasEf / 2;
+  const calc = calcularPonderado(dIni, dFin, horasAnuales, vac);
+  const factor = pct / 100;
+  const horasEf     = calc.horasEf * factor;
+  const jornadaNeta = calc.jornadaNeta * factor;
+  const vacRaw      = calc.vacRaw;
 
   const vacFinal = redondearVac(vacRaw);
   const frac     = vacRaw % 1;
@@ -944,7 +942,7 @@ function calcular() {
   }[turno];
 
   document.getElementById('res-subtitle').textContent =
-    `${turnoLabel} · ${horasAnuales.toLocaleString('es-ES')} h/año · ${vac} días vac.`;
+    `${turnoLabel} · ${horasAnuales.toLocaleString('es-ES')} h/año · ${pct}% jornada · ${vac} días vac.`;
 
   // Hero
   document.getElementById('r-dias').textContent = diasContrato.toLocaleString('es-ES');
@@ -956,8 +954,10 @@ function calcular() {
   // Details
   document.getElementById('r-horas-ef').textContent     = fmtNum(horasEf);
   document.getElementById('r-jornada-neta').textContent = fmtNum(jornadaNeta);
-  document.getElementById('r-red-33').textContent       = fmtNum(red33);
-  document.getElementById('r-red-50').textContent       = fmtNum(red50);
+  document.getElementById('r-horas-ef-sub').textContent =
+    pct === 100
+      ? 'Jornada completa'
+      : `Al ${pct}% sobre ${fmtNum(calc.horasEf)} h de jornada completa`;
 
   // Rounding note
   const dir = frac >= 0.35 ? 'arriba' : 'abajo';
@@ -982,7 +982,7 @@ function calcular() {
   resEl.classList.add('show');
 
   // ── UPDATE URL ────────────────────────────────────────────────────────────
-  const params = new URLSearchParams({ turno, vac, ini: strIni, fin: strFin });
+  const params = new URLSearchParams({ turno, pct, ini: strIni, fin: strFin });
   history.replaceState(null, '', '?' + params.toString());
 
   // ── SCROLL TO RESULTS ON MOBILE ───────────────────────────────────────────
@@ -1003,8 +1003,6 @@ function copiarResultados() {
     `Días totales del contrato:     ${g('r-dias')} días`,
     `Horas efectivas a trabajar:    ${g('r-horas-ef')} h`,
     `Jornada neta sin vacaciones:   ${g('r-jornada-neta')} h`,
-    `Con reducción de jornada 1/3:  ${g('r-red-33')} h`,
-    `Con reducción de jornada 50%:  ${g('r-red-50')} h`,
     '',
     `Vacaciones proporcionales:     ${g('r-vac-final')} días`,
     `Vacaciones exactas:            ${g('r-vac-raw-sub').replace('Valor exacto: ', '')}`,
@@ -1074,6 +1072,14 @@ function toggleRef() {
   btn.setAttribute('aria-expanded', open);
 }
 
+// ── PRE-RELLENAR FECHA FIN con 31/12 del año en curso ─────────────────────
+function prefillFinDate() {
+  const finEl = document.getElementById('f-fin');
+  if (!finEl.value) {
+    finEl.value = `${new Date().getFullYear()}-12-31`;
+  }
+}
+
 // ── LOAD FROM URL ──────────────────────────────────────────────────────────
 function loadFromUrl() {
   const p = new URLSearchParams(window.location.search);
@@ -1081,20 +1087,22 @@ function loadFromUrl() {
   const turno = p.get('turno');
   if (turno) {
     const el = document.querySelector(`input[name="turno"][value="${CSS.escape(turno)}"]`);
-    if (el) { el.checked = true; syncVac(el); }
+    if (el) el.checked = true;
   }
 
-  const vac = p.get('vac');
-  if (vac) {
-    const el = document.querySelector(`input[name="vac"][value="${CSS.escape(vac)}"]`);
+  const pct = p.get('pct');
+  if (pct) {
+    const el = document.querySelector(`input[name="pct"][value="${CSS.escape(pct)}"]`);
     if (el) el.checked = true;
   }
 
   if (p.get('ini')) document.getElementById('f-ini').value = p.get('ini');
   if (p.get('fin')) document.getElementById('f-fin').value = p.get('fin');
 
-  // Auto-calculate if all four parameters are present
-  if (turno && vac && p.get('ini') && p.get('fin')) {
+  prefillFinDate();
+
+  // Auto-calculate if minimum parameters are present
+  if (turno && p.get('ini')) {
     calcular();
   }
 }
