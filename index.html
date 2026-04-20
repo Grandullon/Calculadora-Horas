@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Calculadora de jornada y vacaciones proporcionales para trabajadores del Hospital Universitario Virgen de las Nieves (Granada)">
-  <title>Calculadora de Jornada · HUVN</title>
+  <title>Calculadora de Jornada · Hospital Universitario Virgen de las Nieves</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
@@ -824,7 +824,7 @@
           <input type="radio" name="turno" id="t-man" value="mananas" checked>
           <label for="t-man">
             <span class="t-icon">☀️</span>
-            <span class="t-name">Fijo mañanas<span class="info-tip" tabindex="0" role="tooltip" data-tip="Jornada fija diurna de lunes a viernes. Convenio HUVN: 1.540 h/año y 22 días de vacaciones.">
+            <span class="t-name">Fijo mañanas<span class="info-tip" tabindex="0" role="tooltip" data-tip="Jornada fija diurna de lunes a viernes. Convenio:1.540 h/año y 22 días de vacaciones.">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </span></span>
             <span class="t-hours">1.540 h/año</span>
@@ -834,7 +834,7 @@
           <input type="radio" name="turno" id="t-rot" value="rotatorio">
           <label for="t-rot">
             <span class="t-icon">🔄</span>
-            <span class="t-name">Rotatorio<span class="info-tip" tabindex="0" role="tooltip" data-tip="Turnos alternos (mañana, tarde y noche) incluyendo fines de semana y festivos. Convenio HUVN: 1.483 h/año y 26 días de vacaciones.">
+            <span class="t-name">Rotatorio<span class="info-tip" tabindex="0" role="tooltip" data-tip="Turnos alternos (mañana, tarde y noche) incluyendo fines de semana y festivos. Convenio:1.483 h/año y 26 días de vacaciones.">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </span></span>
             <span class="t-hours">1.483 h/año</span>
@@ -844,7 +844,7 @@
           <input type="radio" name="turno" id="t-noc" value="noches">
           <label for="t-noc">
             <span class="t-icon">🌙</span>
-            <span class="t-name">Noches<span class="info-tip" tabindex="0" role="tooltip" data-tip="Jornada nocturna estable. Convenio HUVN: 1.450 h/año y 26 días de vacaciones.">
+            <span class="t-name">Noches<span class="info-tip" tabindex="0" role="tooltip" data-tip="Jornada nocturna estable. Convenio:1.450 h/año y 26 días de vacaciones.">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </span></span>
             <span class="t-hours">1.450 h/año</span>
@@ -1059,8 +1059,8 @@
 </main>
 
 <footer>
-  <strong>Hospital Universitario Virgen de las Nieves — Departamento de Recursos Humanos</strong>
-  Herramienta de uso interno orientativo. Los valores obtenidos deben confirmarse con el servicio de Recursos Humanos.<br>
+  <strong>Hospital Universitario Virgen de las Nieves</strong>
+  Herramienta de uso interno orientativo. Los valores obtenidos deben confirmarse oficialmente.<br>
   Los cálculos se realizan íntegramente en el navegador. No se almacena ni transmite ningún dato personal.
 </footer>
 
@@ -1287,7 +1287,7 @@ function copiarResultados() {
   const g = id => document.getElementById(id).textContent.trim();
 
   const lineas = [
-    '=== CALCULADORA DE JORNADA · HUVN ===',
+    '=== CALCULADORA DE JORNADA · Hospital Universitario Virgen de las Nieves ===',
     `Periodo:                       ${g('r-periodo')}`,
     `Configuración:                 ${g('res-subtitle')}`,
     '',
@@ -1302,7 +1302,7 @@ function copiarResultados() {
     '',
     `Nota: ${g('round-note').replace(/\s+/g, ' ')}`,
     '',
-    `— Calculado con la herramienta de RRHH · HUVN —`,
+    `— Hospital Universitario Virgen de las Nieves —`,
   ].join('\n');
 
   const fallback = () => {
@@ -1338,7 +1338,7 @@ function compartirUrl() {
 
   if (navigator.share) {
     navigator.share({
-      title: 'Cálculo de jornada — HUVN',
+      title: 'Cálculo de jornada — Hospital Universitario Virgen de las Nieves',
       text:  'Resultado del cálculo de jornada',
       url
     }).catch(() => {});
