@@ -484,16 +484,17 @@
     /* Hero stats */
     .res-hero {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       border-bottom: 1px solid var(--border);
     }
     .hero-item {
-      padding: 1.4rem 1.6rem;
+      padding: 1.4rem 1.4rem;
     }
     .hero-item + .hero-item {
       border-left: 1px solid var(--border);
     }
     .hero-item.vac { background: var(--g50); }
+    .hero-item.dci { background: linear-gradient(135deg, var(--g100), var(--g50)); }
     .hero-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); font-weight: 700; margin-bottom: .4rem; }
     .hero-value {
       font-size: 2.6rem;
@@ -658,6 +659,7 @@
       .res-hero { grid-template-columns: 1fr; }
       .hero-item + .hero-item { border-left: none; border-top: 1px solid var(--border); }
       .hero-value { font-size: 2rem; }
+      .hero-item { padding: 1.1rem 1.3rem; }
 
       .detail-row { flex-direction: column; gap: .2rem; }
       .detail-value { font-size: 1rem; }
@@ -701,6 +703,7 @@
       .res-actions { display: none; }
 
       .hero-item.vac { background: #f0f9f3 !important; }
+      .hero-item.dci { background: #e6f4f9 !important; }
 
       .round-note { background: #f5f5f5 !important; }
 
@@ -886,6 +889,13 @@
           </div>
           <div class="hero-sub" id="r-vac-raw-sub"></div>
         </div>
+        <div class="hero-item dci">
+          <div class="hero-label">DCI proporcionales</div>
+          <div class="hero-value">
+            <span id="r-dci-final"></span><span class="hero-unit">días</span>
+          </div>
+          <div class="hero-sub" id="r-dci-raw-sub"></div>
+        </div>
       </div>
 
       <!-- Detail rows -->
@@ -896,13 +906,6 @@
             <small id="r-horas-ef-sub"></small>
           </span>
           <span class="detail-value"><span id="r-horas-ef"></span><span class="unit">h</span></span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">
-            Jornada neta sin vacaciones
-            <small>Divisor: días del año menos días de vacaciones</small>
-          </span>
-          <span class="detail-value"><span id="r-jornada-neta"></span><span class="unit">h</span></span>
         </div>
       </div>
 
@@ -957,8 +960,8 @@
           <li><strong>Horas efectivas</strong> = horas_anuales × días_contrato ÷ días_año</li>
           <li><strong>Reducción 1/3</strong> = horas_efectivas × 2/3 &nbsp;(conserva dos tercios)</li>
           <li><strong>Reducción 50%</strong> = horas_efectivas ÷ 2</li>
-          <li><strong>Jornada neta</strong> = horas_anuales × días_contrato ÷ (días_año − días_vac_anuales)</li>
           <li><strong>Vacaciones proporcionales</strong> = días_contrato × días_vac_anuales ÷ días_año</li>
+          <li><strong>DCI proporcionales</strong> = días_contrato × 6 ÷ días_año &nbsp;(6 días/año trabajado)</li>
           <li><strong>Redondeo (regla 0,35):</strong> si la fracción ≥ 0,35 → redondear arriba; si &lt; 0,35 → redondear abajo</li>
           <li><em>En contratos multianuales el cálculo se pondera año a año, usando 365 o 366 días según corresponda.</em></li>
         </ul>
@@ -977,6 +980,7 @@
 // ── CONSTANTS ─────────────────────────────────────────────────────────────
 const HORAS_TURNO = { mananas: 1540, rotatorio: 1483, noches: 1450 };
 const VAC_TURNO   = { mananas: 22, rotatorio: 26, noches: 26 };
+const DCI_ANUAL   = 6;
 
 // ── DATE UTILITIES ─────────────────────────────────────────────────────────
 
@@ -1029,32 +1033,29 @@ function redondearVac(raw) {
  * by year so each segment uses the correct days-in-year denominator
  * (366 for leap years, 365 otherwise).
  *
- * Returns { horasEf, jornadaNeta, vacRaw }
+ * Returns { horasEf, vacRaw, dciRaw }
  */
 function calcularPonderado(inicio, fin, horasAnuales, diasVac) {
   const yStart = inicio.getUTCFullYear();
   const yEnd   = fin.getUTCFullYear();
 
-  let horasEf    = 0;
-  let jornadaNeta = 0;
-  let vacRaw      = 0;
+  let horasEf = 0;
+  let vacRaw  = 0;
+  let dciRaw  = 0;
 
   for (let y = yStart; y <= yEnd; y++) {
-    // Start of this segment
     const segIni = (y === yStart) ? inicio : utcDate(y, 0, 1);
-    // End of this segment
     const segFin = (y === yEnd)   ? fin    : utcDate(y, 11, 31);
 
-    const dias   = daysBetween(segIni, segFin);
-    const dAnio  = daysInYear(y);
-    const divisorNeto = dAnio - diasVac;
+    const dias  = daysBetween(segIni, segFin);
+    const dAnio = daysInYear(y);
 
-    horasEf     += horasAnuales * dias / dAnio;
-    jornadaNeta += horasAnuales * dias / divisorNeto;
-    vacRaw      += dias * diasVac / dAnio;
+    horasEf += horasAnuales * dias / dAnio;
+    vacRaw  += dias * diasVac / dAnio;
+    dciRaw  += dias * DCI_ANUAL / dAnio;
   }
 
-  return { horasEf, jornadaNeta, vacRaw };
+  return { horasEf, vacRaw, dciRaw };
 }
 
 // ── VALIDATION ─────────────────────────────────────────────────────────────
@@ -1125,11 +1126,12 @@ function calcular() {
 
   const calc = calcularPonderado(dIni, dFin, horasAnuales, vac);
   const factor = pct / 100;
-  const horasEf     = calc.horasEf * factor;
-  const jornadaNeta = calc.jornadaNeta * factor;
-  const vacRaw      = calc.vacRaw;
+  const horasEf = calc.horasEf * factor;
+  const vacRaw  = calc.vacRaw;
+  const dciRaw  = calc.dciRaw;
 
   const vacFinal = redondearVac(vacRaw);
+  const dciFinal = redondearVac(dciRaw);
   const frac     = vacRaw % 1;
   const fracPct  = Math.round(frac * 100);
 
@@ -1149,10 +1151,12 @@ function calcular() {
   document.getElementById('r-vac-final').textContent = vacFinal;
   document.getElementById('r-vac-raw-sub').textContent =
     `Valor exacto: ${fmtNum(vacRaw)} días`;
+  document.getElementById('r-dci-final').textContent = dciFinal;
+  document.getElementById('r-dci-raw-sub').textContent =
+    `Valor exacto: ${fmtNum(dciRaw)} días · 6 días/año`;
 
   // Details
-  document.getElementById('r-horas-ef').textContent     = fmtNum(horasEf);
-  document.getElementById('r-jornada-neta').textContent = fmtNum(jornadaNeta);
+  document.getElementById('r-horas-ef').textContent = fmtNum(horasEf);
   document.getElementById('r-horas-ef-sub').textContent =
     pct === 100
       ? 'Jornada completa'
@@ -1201,10 +1205,12 @@ function copiarResultados() {
     '',
     `Días totales del contrato:     ${g('r-dias')} días`,
     `Horas efectivas a trabajar:    ${g('r-horas-ef')} h`,
-    `Jornada neta sin vacaciones:   ${g('r-jornada-neta')} h`,
     '',
     `Vacaciones proporcionales:     ${g('r-vac-final')} días`,
     `Vacaciones exactas:            ${g('r-vac-raw-sub').replace('Valor exacto: ', '')}`,
+    '',
+    `DCI proporcionales:            ${g('r-dci-final')} días`,
+    `DCI exactos:                   ${g('r-dci-raw-sub').replace('Valor exacto: ', '')}`,
     '',
     `Nota: ${g('round-note').replace(/\s+/g, ' ')}`,
     '',
