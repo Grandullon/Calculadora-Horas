@@ -617,95 +617,6 @@
     }
     .detail-value .unit { font-size: .78rem; font-weight: 500; color: var(--text-muted); margin-left: .25rem; }
 
-    /* Rounding note */
-    .round-note {
-      padding: .8rem 1.6rem;
-      background: var(--g50);
-      border-top: 1px solid var(--border);
-      font-size: .8rem;
-      color: var(--text-sec);
-      line-height: 1.5;
-    }
-    .round-note strong { color: var(--g700); }
-
-    /* ── REFERENCE TABLE ─────────────────────────────────────────── */
-    .ref-section { margin-top: 1.5rem; }
-    .ref-toggle {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.4rem;
-      background: rgba(255, 255, 255, .85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, .6);
-      border-radius: var(--r);
-      cursor: pointer;
-      font-family: inherit;
-      font-size: .9rem;
-      font-weight: 600;
-      color: var(--text-sec);
-      transition: background .2s var(--ease-smooth), color .2s var(--ease-smooth), transform .2s var(--ease-spring), box-shadow .2s var(--ease-smooth);
-      box-shadow: var(--sh-sm);
-    }
-    .ref-toggle:hover {
-      background: #fff;
-      color: var(--g800);
-      transform: translateY(-1px);
-      box-shadow: var(--sh-md);
-    }
-    .ref-toggle .chevron { transition: transform .25s; flex-shrink: 0; }
-    .ref-toggle.open { border-radius: var(--r) var(--r) 0 0; }
-    .ref-toggle.open .chevron { transform: rotate(180deg); }
-    .ref-body {
-      display: none;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 var(--r) var(--r);
-      overflow: hidden;
-    }
-    .ref-body.open { display: block; }
-
-    table.ref-tbl { width: 100%; border-collapse: collapse; font-size: .84rem; }
-    .ref-tbl thead { background: var(--g50); }
-    .ref-tbl th {
-      padding: .65rem 1rem;
-      text-align: left;
-      font-size: .72rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      font-weight: 600;
-    }
-    .ref-tbl td {
-      padding: .7rem 1rem;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-    }
-    .ref-tbl tr:last-child td { border-bottom: none; }
-    .ref-tbl tbody tr:hover td { background: var(--g50); }
-
-    .ref-formulas {
-      padding: 1rem 1.25rem 1.1rem;
-      background: #f7f7f7;
-      border-top: 1px solid var(--border);
-      font-size: .8rem;
-      color: var(--text-sec);
-    }
-    .ref-formulas h4 { font-size: .8rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
-    .ref-formulas li { margin-bottom: .25rem; line-height: 1.5; list-style: none; padding-left: 1em; text-indent: -1em; }
-    .ref-formulas li::before { content: '→ '; color: var(--g600); font-weight: 700; }
-    code {
-      font-family: 'Courier New', monospace;
-      font-size: .85em;
-      background: #ddf0f8;
-      color: var(--g700);
-      padding: .1em .35em;
-      border-radius: 3px;
-    }
-
     /* ── FOOTER ──────────────────────────────────────────────────── */
     footer {
       background: var(--g900);
@@ -783,11 +694,9 @@
       .hero-item.vac { background: #f0f9f3 !important; }
       .hero-item.dci { background: #e6f4f9 !important; }
 
-      .round-note { background: #f5f5f5 !important; }
-
       .warn-banner { background: #fff8e6 !important; }
 
-      .ref-section, footer { display: none !important; }
+      footer { display: none !important; }
 
       .print-stamp {
         display: block !important;
@@ -964,7 +873,6 @@
           <div class="hero-value">
             <span id="r-dias"></span><span class="hero-unit">días</span>
           </div>
-          <div class="hero-sub" id="r-periodo"></div>
         </div>
         <div class="hero-item vac">
           <div class="hero-label">Vacaciones proporcionales<span class="info-tip tip-below" tabindex="0" role="tooltip" data-tip="Días de vacaciones anuales según convenio (22 o 26 según turno), prorrateados al periodo del contrato.">
@@ -973,16 +881,14 @@
           <div class="hero-value">
             <span id="r-vac-final"></span><span class="hero-unit">días</span>
           </div>
-          <div class="hero-sub" id="r-vac-raw-sub"></div>
         </div>
         <div class="hero-item dci">
-          <div class="hero-label">DCI proporcionales<span class="info-tip tip-below" tabindex="0" role="tooltip" data-tip="Días por Convenio Individual: 6 días al año trabajado, proporcionales a la duración del contrato.">
+          <div class="hero-label">DCI<span class="info-tip tip-below" tabindex="0" role="tooltip" data-tip="Días por Convenio Individual. Se reconoce 1 día por cada 60 días de contrato, hasta un máximo de 6 al año.">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           </span></div>
           <div class="hero-value">
             <span id="r-dci-final"></span><span class="hero-unit">días</span>
           </div>
-          <div class="hero-sub" id="r-dci-raw-sub"></div>
         </div>
       </div>
 
@@ -997,65 +903,9 @@
         </div>
       </div>
 
-      <!-- Rounding explanation -->
-      <div class="round-note" id="round-note"></div>
     </div>
   </section>
 
-  <!-- ── REFERENCE TABLE ─────────────────────────────────────────── -->
-  <div class="ref-section">
-    <button class="ref-toggle" id="ref-toggle" onclick="toggleRef()" aria-expanded="false">
-      <span>📋 Tabla de referencia del convenio</span>
-      <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
-    </button>
-    <div class="ref-body" id="ref-body" role="region">
-      <table class="ref-tbl">
-        <thead>
-          <tr>
-            <th>Turno</th>
-            <th>Horas anuales</th>
-            <th>Vacaciones típicas</th>
-            <th>Tipo de personal</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>☀️ Fijo mañanas</td>
-            <td><strong>1.540 h</strong></td>
-            <td>22 días laborales</td>
-            <td>Personal laboral diurno</td>
-          </tr>
-          <tr>
-            <td>🔄 Rotatorio</td>
-            <td><strong>1.483 h</strong></td>
-            <td>26 días laborales</td>
-            <td>Personal laboral rotatorio</td>
-          </tr>
-          <tr>
-            <td>🌙 Noches</td>
-            <td><strong>1.450 h</strong></td>
-            <td>26 días laborales</td>
-            <td>Personal laboral nocturno</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="ref-formulas">
-        <h4>Fórmulas aplicadas</h4>
-        <ul>
-          <li><strong>Días contrato</strong> = fecha_fin − fecha_inicio + 1 (ambos extremos incluidos)</li>
-          <li><strong>Horas efectivas</strong> = horas_anuales × días_contrato ÷ días_año</li>
-          <li><strong>Reducción 1/3</strong> = horas_efectivas × 2/3 &nbsp;(conserva dos tercios)</li>
-          <li><strong>Reducción 50%</strong> = horas_efectivas ÷ 2</li>
-          <li><strong>Vacaciones proporcionales</strong> = días_contrato × días_vac_anuales ÷ días_año</li>
-          <li><strong>DCI proporcionales</strong> = días_contrato × 6 ÷ días_año &nbsp;(6 días/año trabajado)</li>
-          <li><strong>Redondeo (regla 0,35):</strong> si la fracción ≥ 0,35 → redondear arriba; si &lt; 0,35 → redondear abajo</li>
-          <li><em>En contratos multianuales el cálculo se pondera año a año, usando 365 o 366 días según corresponda.</em></li>
-        </ul>
-      </div>
-    </div>
-  </div>
 </main>
 
 <footer>
@@ -1068,7 +918,6 @@
 // ── CONSTANTS ─────────────────────────────────────────────────────────────
 const HORAS_TURNO = { mananas: 1540, rotatorio: 1483, noches: 1450 };
 const VAC_TURNO   = { mananas: 22, rotatorio: 26, noches: 26 };
-const DCI_ANUAL   = 6;
 
 // ── DATE UTILITIES ─────────────────────────────────────────────────────────
 
@@ -1121,7 +970,7 @@ function redondearVac(raw) {
  * by year so each segment uses the correct days-in-year denominator
  * (366 for leap years, 365 otherwise).
  *
- * Returns { horasEf, vacRaw, dciRaw }
+ * Returns { horasEf, vacRaw }
  */
 function calcularPonderado(inicio, fin, horasAnuales, diasVac) {
   const yStart = inicio.getUTCFullYear();
@@ -1129,7 +978,6 @@ function calcularPonderado(inicio, fin, horasAnuales, diasVac) {
 
   let horasEf = 0;
   let vacRaw  = 0;
-  let dciRaw  = 0;
 
   for (let y = yStart; y <= yEnd; y++) {
     const segIni = (y === yStart) ? inicio : utcDate(y, 0, 1);
@@ -1140,10 +988,9 @@ function calcularPonderado(inicio, fin, horasAnuales, diasVac) {
 
     horasEf += horasAnuales * dias / dAnio;
     vacRaw  += dias * diasVac / dAnio;
-    dciRaw  += dias * DCI_ANUAL / dAnio;
   }
 
-  return { horasEf, vacRaw, dciRaw };
+  return { horasEf, vacRaw };
 }
 
 // ── VALIDATION ─────────────────────────────────────────────────────────────
@@ -1216,12 +1063,10 @@ function calcular() {
   const factor = pct / 100;
   const horasEf = calc.horasEf * factor;
   const vacRaw  = calc.vacRaw;
-  const dciRaw  = calc.dciRaw;
 
   const vacFinal = redondearVac(vacRaw);
-  const dciFinal = redondearVac(dciRaw);
-  const frac     = vacRaw % 1;
-  const fracPct  = Math.round(frac * 100);
+  // DCI por escalones: 1 día cada 60 días de contrato, hasta un máximo de 6
+  const dciFinal = Math.min(6, Math.floor(diasContrato / 60));
 
   // ── UPDATE DOM ────────────────────────────────────────────────────────────
   const turnoLabel = {
@@ -1235,13 +1080,8 @@ function calcular() {
 
   // Hero
   document.getElementById('r-dias').textContent = diasContrato.toLocaleString('es-ES');
-  document.getElementById('r-periodo').textContent = `Del ${fmtDate(dIni)} al ${fmtDate(dFin)}`;
   document.getElementById('r-vac-final').textContent = vacFinal;
-  document.getElementById('r-vac-raw-sub').textContent =
-    `Valor exacto: ${fmtNum(vacRaw)} días`;
   document.getElementById('r-dci-final').textContent = dciFinal;
-  document.getElementById('r-dci-raw-sub').textContent =
-    `Valor exacto: ${fmtNum(dciRaw)} días · 6 días/año`;
 
   // Details
   document.getElementById('r-horas-ef').textContent = fmtNum(horasEf);
@@ -1249,14 +1089,6 @@ function calcular() {
     pct === 100
       ? 'Jornada completa'
       : `Al ${pct}% sobre ${fmtNum(calc.horasEf)} h de jornada completa`;
-
-  // Rounding note
-  const dir = frac >= 0.35 ? 'arriba' : 'abajo';
-  const sym = frac >= 0.35 ? '≥' : '<';
-  document.getElementById('round-note').innerHTML =
-    `<strong>Regla de redondeo (norma 0,35):</strong> fracción obtenida = ` +
-    `<strong>${fracPct}%</strong> — como es ${sym} 35%, se redondea ` +
-    `<strong>hacia ${dir}</strong> → ${fmtNum(vacRaw)} días → <strong>${vacFinal} días</strong>.`;
 
   // Multi-year banner
   document.getElementById('warn-multi').classList.toggle('show', esMultianual);
@@ -1288,19 +1120,13 @@ function copiarResultados() {
 
   const lineas = [
     '=== CALCULADORA DE JORNADA · Hospital Universitario Virgen de las Nieves ===',
-    `Periodo:                       ${g('r-periodo')}`,
     `Configuración:                 ${g('res-subtitle')}`,
     '',
     `Días totales del contrato:     ${g('r-dias')} días`,
     `Horas efectivas a trabajar:    ${g('r-horas-ef')} h`,
     '',
     `Vacaciones proporcionales:     ${g('r-vac-final')} días`,
-    `Vacaciones exactas:            ${g('r-vac-raw-sub').replace('Valor exacto: ', '')}`,
-    '',
-    `DCI proporcionales:            ${g('r-dci-final')} días`,
-    `DCI exactos:                   ${g('r-dci-raw-sub').replace('Valor exacto: ', '')}`,
-    '',
-    `Nota: ${g('round-note').replace(/\s+/g, ' ')}`,
+    `DCI:                           ${g('r-dci-final')} días`,
     '',
     `— Hospital Universitario Virgen de las Nieves —`,
   ].join('\n');
@@ -1354,15 +1180,6 @@ function compartirUrl() {
       setTimeout(() => { btn.innerHTML = orig; }, 2200);
     });
   }
-}
-
-// ── REFERENCE TABLE TOGGLE ─────────────────────────────────────────────────
-function toggleRef() {
-  const btn  = document.getElementById('ref-toggle');
-  const body = document.getElementById('ref-body');
-  const open = btn.classList.toggle('open');
-  body.classList.toggle('open', open);
-  btn.setAttribute('aria-expanded', open);
 }
 
 // ── PRE-RELLENAR FECHA FIN con 31/12 del año en curso ─────────────────────
